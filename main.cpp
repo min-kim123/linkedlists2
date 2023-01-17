@@ -10,23 +10,19 @@ You can add, print, and delete students, and also print the averages of all the 
 Date: 1/27/23
 */
 
-void add(Node* &head, Node* newnode) {//insert and sort
-    Node* movingnode;//node pointer to travel through existing nodes
+void add(Node* head, Node* newnode) {//insert and sort
+    if (head != NULL) {
+        cout << "inside add function, head is not null";
+        head = head->next;
+        //cout << head->student->id;//test to see if it moves through all previous inputs
+        add(head, newnode);//recursion, move through all existing nodes
+    }
+    else {//only accessed after recursion
+        head->next = newnode;
+    }
     
-    if (head == NULL) {//first node
-        cout << "head is null";
-        head = newnode;
-    }
-    else {//node already exists
-        cout << "head is not null";
-        movingnode = head;//movingnode = very first node
-        while (movingnode != NULL) {//move through all existing nodes
-            movingnode = movingnode->getNext();
-            cout << movingnode->student->id;
-            //add(movingnode, newnode);//recursion
-        }
-        //movingnode->next = newnode;//after traveling through all nodes, set next node to newnode*/
-    }
+        //head->next = newnode;//after traveling through all nodes, set next node to newnode*/
+    
 }
 
 void print(Node* n) {
@@ -62,7 +58,15 @@ int main(){
             newstudent->id = id;//set newstudent node id to value
             Node* newnode = new Node(newstudent);//put newstudent into new node
             //pass head, newnode
-            add(head, newnode);
+
+            if (head == NULL) {
+                cout << "head is null";
+                head = newnode;
+            }
+            else {
+                cout << "head is not null" << endl;
+                add(head, newnode);
+            }
         }
         else if (strcmp(input, "print") == 0) {//user inputs "print"
             print(head);
