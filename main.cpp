@@ -10,32 +10,84 @@ You can add, print, and delete students, and also print the averages of all the 
 Date: 1/27/23
 */
 
-void add(Node* head, Node* newnode) {//insert done, working on sort
-    if (head->getNext() != NULL) {
-        head = head->getNext();
-        //cout << head->getStudent()->id;//test to see if it moves through all previous inputs
-        add(head, newnode);//recursion, move through all existing nodes
+void add(Node* &head, Node* newnode) {//insert done, working on sort
+//for head:
+//2 in front- works like regular
+//1 in front- getnext getnext would be null
+//0 in front (end of the list)- have to check if head is greater or not
+
+//just redo add. does not make sense.
+    if (head->getNext() != NULL) {//one or more node IN FRONT of head
+        if ((head->getStudent()->id <= newnode->getStudent()->id) && (head->getNext()->getStudent()->id >= newnode->getStudent()->id)) {
+            head->next = newnode;
+        }
+        else {
+            head = head->getNext();
+            add(head, newnode);
+        }
     }
-    else {//only accessed after recursion
-        head->next = newnode;//for some reason this only works if it's "next" and not "getNext()"
+    else {//there is only one node.
+        cout << "there is only one node" << endl;
+        if (newnode->getStudent()->id >= head->getStudent()->id) {//newnode is greater or equal
+            cout << "newnode is greater" << endl;
+            head->next = newnode;
+        }
+        else {//newnode is less
+            cout << "newnode is less" << endl;
+            newnode->next = head;
+        }
     }
 }
+
+
+/*
+    if (head->getNext() != NULL) {//one or more node IN FRONT of head
+    
+        if (head->getNext()->getNext() != NULL) {//two or mode
+            if ((head->getNext()->getStudent()->id <= newnode->getStudent()->id) && (head->getNext()->getNext()->getStudent()->id >= newnode->getStudent()->id)) {
+                head->next = newnode;
+            }
+            else {
+                head = head->getNext();
+                add(head, newnode);
+            }
+        }
+        else {
+            if (newnode->getStudent()->id <= head->getNext()->getStudent()->id) {
+                head->next = newnode;
+            }
+            else {
+                head->next->next = newnode;
+            }
+        }
+    }
+    else {//there is only one node.
+        if (newnode->getStudent()->id >= head->getStudent()->id) {//newnode is greater or equal
+            head->next = newnode;
+        }
+        else {//newnode is less
+            newnode->next = head;
+        }
+    }
+*/
 
 void print(Node* n) {//done
     cout << fixed << setprecision(2);//for gpa to have 2 decimal places
     if (n != NULL) {
-        cout << n->getStudent()->id;
+        cout << "---------------------" << endl;
+        cout << "ID: " << n->getStudent()->id << endl;
         n = n->getNext();
         print(n);//recursion
     }
 }
 
-void deleet(Node* head, int id) {//doesn't work if it's the first one.
-//make a temp pointer
+void deleet(Node* &head, int id) {//works, just need to actually delete
     if (id == head->getStudent()->id) {//for the first one- just delete it no reconnecting
+        //add code here to actually delete. need temp?
+        head = head->getNext();//new head is next
     }
     else if (id == head->getNext()->getStudent()->id) {//if NEXT node is equal
-        //delete head;//pointer being freed was not allocated
+        //add code here to actually delete//pointer being freed was not allocated
         head->next = head->getNext()->getNext();//reconnecting nodes after deletion
     }
     else {
@@ -57,8 +109,7 @@ void average(Node* head, float total, int count) {//done
     }
 }
 
-int main(){
-
+int main() {
     Node* head = NULL;
     char input[10];
     int id = 0;
@@ -74,8 +125,6 @@ int main(){
             Student* newstudent = new Student();
             newstudent->id = id;//set newstudent node id to value
             Node* newnode = new Node(newstudent);//put newstudent into new node
-            //pass head, newnode
-
             if (head == NULL) {
                 cout << "head is null";
                 head = newnode;
@@ -88,6 +137,7 @@ int main(){
         }
         else if (strcmp(input, "print") == 0) {//user inputs "print"
             print(head);
+            cout << "---------------------" << endl;
         }
         else if (strcmp(input, "delete") == 0) {//user inputs "delete"
             cout << "ID: ";
@@ -110,6 +160,7 @@ int main(){
         else {//something else
             cout << "Invalid input." << endl;
         }
+        cout << "HEAD: " << head->getStudent()->id << endl;
     }  
   return 0;
 }
