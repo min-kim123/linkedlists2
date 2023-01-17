@@ -11,10 +11,10 @@ Date: 1/27/23
 */
 
 void add(Node* head, Node* newnode) {//insert and sort
-    if (head != NULL) {
+    if (head->next != NULL) {
         cout << "inside add function, head is not null";
         head = head->next;
-        //cout << head->student->id;//test to see if it moves through all previous inputs
+        cout << head->student->id;//test to see if it moves through all previous inputs
         add(head, newnode);//recursion, move through all existing nodes
     }
     else {//only accessed after recursion
@@ -62,6 +62,7 @@ int main(){
             if (head == NULL) {
                 cout << "head is null";
                 head = newnode;
+                cout << head->student->id;
             }
             else {
                 cout << "head is not null" << endl;
