@@ -10,66 +10,27 @@ You can add, print, and delete students, and also print the averages of all the 
 Date: 1/27/23
 */
 
-void add(Node* &head, Node* newnode) {//insert done, working on sort
-//for head:
-//2 in front- works like regular
-//1 in front- getnext getnext would be null
-//0 in front (end of the list)- have to check if head is greater or not
 
-//just redo add. does not make sense.
+void add(Node* head, Node* newnode) {//insert done, working on sort
     if (head->getNext() != NULL) {//one or more node IN FRONT of head
-        if ((head->getStudent()->id <= newnode->getStudent()->id) && (head->getNext()->getStudent()->id >= newnode->getStudent()->id)) {
-            head->next = newnode;
+        if (newnode->getStudent()->id <= head->getNext()->getStudent()->id) {
+            newnode->next = head->getNext();
         }
         else {
             head = head->getNext();
             add(head, newnode);
         }
     }
-    else {//there is only one node.
-        cout << "there is only one node" << endl;
+    else {//there is only one node from the beginning/ went through all existing nodes and there is only last one left to compare
         if (newnode->getStudent()->id >= head->getStudent()->id) {//newnode is greater or equal
-            cout << "newnode is greater" << endl;
             head->next = newnode;
         }
         else {//newnode is less
-            cout << "newnode is less" << endl;
             newnode->next = head;
         }
     }
 }
-
-
-/*
-    if (head->getNext() != NULL) {//one or more node IN FRONT of head
-    
-        if (head->getNext()->getNext() != NULL) {//two or mode
-            if ((head->getNext()->getStudent()->id <= newnode->getStudent()->id) && (head->getNext()->getNext()->getStudent()->id >= newnode->getStudent()->id)) {
-                head->next = newnode;
-            }
-            else {
-                head = head->getNext();
-                add(head, newnode);
-            }
-        }
-        else {
-            if (newnode->getStudent()->id <= head->getNext()->getStudent()->id) {
-                head->next = newnode;
-            }
-            else {
-                head->next->next = newnode;
-            }
-        }
-    }
-    else {//there is only one node.
-        if (newnode->getStudent()->id >= head->getStudent()->id) {//newnode is greater or equal
-            head->next = newnode;
-        }
-        else {//newnode is less
-            newnode->next = head;
-        }
-    }
-*/
+//if it changes the head it is a special case
 
 void print(Node* n) {//done
     cout << fixed << setprecision(2);//for gpa to have 2 decimal places
@@ -82,7 +43,7 @@ void print(Node* n) {//done
 }
 
 void deleet(Node* &head, int id) {//works, just need to actually delete
-    if (id == head->getStudent()->id) {//for the first one- just delete it no reconnecting
+    if (id == head->getStudent()->id) {//for the first one OR after recursion
         //add code here to actually delete. need temp?
         head = head->getNext();//new head is next
     }
@@ -129,6 +90,10 @@ int main() {
                 cout << "head is null";
                 head = newnode;
                 cout << head->getStudent()->id;
+            }
+            else if (newnode->getStudent()->id <= head->getStudent()->id){//if it is smaller than first node (head) it is a special case since head is changing values
+                newnode->next = head;
+                head = newnode;
             }
             else {
                 cout << "head is not null" << endl;
