@@ -13,24 +13,24 @@ Date: 1/27/23
 
 void add(Node* head, Node* newnode) {//insert done, working on sort
     if (head->getNext() != NULL) {//one or more node IN FRONT of head
-        if (newnode->getStudent()->id <= head->getNext()->getStudent()->id) {
-            newnode->next = head->getNext();
-        }
-        else {
+        if (newnode->getStudent()->id >= head->getNext()->getStudent()->id) {
             head = head->getNext();
             add(head, newnode);
+        }
+        else {
+            Node* temp = head->next;
+            head->next = newnode;
+            newnode->next = temp;
         }
     }
     else {//there is only one node from the beginning/ went through all existing nodes and there is only last one left to compare
         if (newnode->getStudent()->id >= head->getStudent()->id) {//newnode is greater or equal
+            Node* temp = head->next;
             head->next = newnode;
-        }
-        else {//newnode is less
-            newnode->next = head;
+            newnode->next = temp;
         }
     }
 }
-//if it changes the head it is a special case
 
 void print(Node* n) {//done
     cout << fixed << setprecision(2);//for gpa to have 2 decimal places
