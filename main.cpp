@@ -11,7 +11,7 @@ Date: 1/27/23
 */
 
 
-void add(Node* head, Node* newnode) {//insert done, working on sort
+void add(Node* head, Node* newnode) {//done
     if (head->getNext() != NULL) {//one or more node IN FRONT of head
         if (newnode->getStudent()->id >= head->getNext()->getStudent()->id) {
             head = head->getNext();
@@ -42,13 +42,10 @@ void print(Node* n) {//done
     }
 }
 
-void deleet(Node* &head, int id) {//works, just need to actually delete
-    if (id == head->getStudent()->id) {//for the first one OR after recursion
-        //add code here to actually delete. need temp?
-        head = head->getNext();//new head is next
-    }
-    else if (id == head->getNext()->getStudent()->id) {//if NEXT node is equal
+void deleet(Node* head, int id) {//DOESNT WORK.
+    if (id == head->getNext()->getStudent()->id) {//if NEXT node is equal
         //add code here to actually delete//pointer being freed was not allocated
+        head->next= NULL;
         head->next = head->getNext()->getNext();//reconnecting nodes after deletion
     }
     else {
@@ -109,6 +106,11 @@ int main() {
             cin >> id;
             if (head == NULL) {
                 cout << "Empty list. Nothing to delete" << endl;
+            }
+            else if (id == head->getStudent()->id){//when the first one is being deleted, special case since head is being changed.
+                head = head->getNext();
+                //add code to actually delete head
+
             }
             else {
                 deleet(head, id);
