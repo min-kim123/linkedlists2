@@ -17,16 +17,16 @@ void add(Node* n, Node* newnode) {//done
             add(n, newnode);
         }
         else {
-            Node* temp = n->next;
-            n->next = newnode;
-            newnode->next = temp;
+            Node* temp = n->getNext();
+            n->setNext(newnode);
+            newnode->setNext(temp);
         }
     }
     else {//there is only one node from the beginning/ went through all existing nodes and there is only last one left to compare
         if (newnode->getStudent()->getID() >= n->getStudent()->getID()) {//newnode is greater or equal
-            Node* temp = n->next;
-            n->next = newnode;
-            newnode->next = temp;
+            Node* temp = n->getNext();
+            n->setNext(newnode);
+            newnode->setNext(temp);
         }
     }
 }
@@ -45,9 +45,10 @@ void print(Node* n) {//done
 
 void deleet(Node* n, int id) {//done
     Node* h = n;
-    if (id == n->getNext()->getStudent()->id) {//if NEXT node is equal
-        Node* temp = n->next;
-        n->next = n->next->next;
+    if (id == n->getNext()->getStudent()->getID()) {//if NEXT node is equal
+        Node* temp = n->getNext();
+        n->setNext(n->getNext()->getNext());
+        //n->next = n->next->next;
         delete temp;
     }
     else {
@@ -92,21 +93,21 @@ int main() {
             cin.ignore();
             cout << "ID: ";
             cin >> id;
-            cout << "GPA" ;
+            cout << "GPA: " ;
             cin >> gpa;            
 
             Student* newstudent = new Student();
             newstudent->setFirst(firstname);
             newstudent->setLast(lastname);
-            newstudent->setID(id);//set newstudent node id to value
+            newstudent->setID(id);
             newstudent->setGPA(gpa);
             Node* newnode = new Node(newstudent);//put newstudent into new node
 
             if (head == NULL) {
                 head = newnode;
             }
-            else if (newnode->getStudent()->id <= head->getStudent()->id){//if it is smaller than first node (head) it is a special case since head is changing values
-                newnode->next = head;
+            else if (newnode->getStudent()->getID() <= head->getStudent()->getID()){//if it is smaller than first node (head) it is a special case since head is changing values
+                newnode->setNext(head);
                 head = newnode;
             }
             else {
@@ -123,14 +124,14 @@ int main() {
             if (head == NULL) {
                 cout << "Empty list. Nothing to delete" << endl;
             }
-            else if (id == head->student->id) {//when the first one is being deleted, special case since head is being changed.
+            else if (id == head->getStudent()->getID()) {//when the first one is being deleted, special case since head is being changed.
                 Node* temp = head;
-                if (head->next == NULL) {//there is only one node
+                if (head->getNext() == NULL) {//there is only one node
                     head = NULL;
                 }
                 else {
                     cout << "else  changing head" << endl;
-                    head = head->next;
+                    head = head->getNext();
                     delete temp;
                 }
             }
