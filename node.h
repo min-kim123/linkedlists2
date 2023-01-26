@@ -12,7 +12,7 @@ public:
     void setNext(Node *next);
     Student *getStudent();
 
-
+private:
     Node *next;
     Student *student;
 };
