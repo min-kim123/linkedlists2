@@ -1,8 +1,10 @@
 #include <iostream>
 #include <iomanip>//include for setprecision thing
 #include "student.h"
+#include <cstring>
 #include "node.h"
 using namespace std;
+
 /*
 Author: Min Kim
 Program Description: This is a student list program utilizing a basic linked list. 
@@ -10,65 +12,10 @@ You can add, print, and delete students, and also print the averages of all the 
 Date: 1/27/23
 */
 
-void add(Node* n, Node* newnode) {//done
-    if (n->getNext() != NULL) {//one or more node IN FRONT of n
-        if (newnode->getStudent()->getID() >= n->getNext()->getStudent()->getID()) {
-            n = n->getNext();
-            add(n, newnode);
-        }
-        else {
-            Node* temp = n->getNext();
-            n->setNext(newnode);
-            newnode->setNext(temp);
-        }
-    }
-    else {//there is only one node from the beginning/ went through all existing nodes and there is only last one left to compare
-        if (newnode->getStudent()->getID() >= n->getStudent()->getID()) {//newnode is greater or equal
-            Node* temp = n->getNext();
-            n->setNext(newnode);
-            newnode->setNext(temp);
-        }
-    }
-}
-
-void print(Node* n) {//done
-    cout << fixed << setprecision(2);//for gpa to have 2 decimal places
-    if (n != NULL) {
-        cout << "---------------------" << endl;
-        cout << "Name: " << n->getStudent()->getFirst() << " " << n->getStudent()->getLast() << endl;
-        cout << "ID: " << n->getStudent()->getID() << endl;
-        cout << "GPA: " << n->getStudent()->getGPA() << endl;
-        n = n->getNext();
-        print(n);//recursion
-    }
-}
-
-void deleet(Node* n, int id) {//done
-    Node* h = n;
-    if (id == n->getNext()->getStudent()->getID()) {//if NEXT node is equal
-        Node* temp = n->getNext();
-        n->setNext(n->getNext()->getNext());
-        //n->next = n->next->next;
-        delete temp;
-    }
-    else {
-        n = n->getNext();
-        deleet(n, id);
-    }
-}
-
-void average(Node* n, float total, int count) {//done
-    cout << fixed << setprecision(2);//for gpa to have 2 decimal places
-    if (n->getNext() != NULL) {
-        n = n->getNext();
-        total = total + n->getStudent()->getGPA();
-        count++;
-        average(n, total, count);
-    }
-    else {
-        cout << "Average GPA: " << total/count << endl;
-    }
-}
+void add(Node* n, Node* newnode);
+void deleet(Node* n, int id);
+void print(Node* n);
+void average(Node* n, float total, int count);
 
 int main() {
     Node* head = NULL;
@@ -153,3 +100,64 @@ int main() {
     }  
   return 0;
 }
+
+void add(Node* n, Node* newnode) {//done
+    if (n->getNext() != NULL) {//one or more node IN FRONT of n
+        if (newnode->getStudent()->getID() >= n->getNext()->getStudent()->getID()) {
+            n = n->getNext();
+            add(n, newnode);
+        }
+        else {
+            Node* temp = n->getNext();
+            n->setNext(newnode);
+            newnode->setNext(temp);
+        }
+    }
+    else {//there is only one node from the beginning/ went through all existing nodes and there is only last one left to compare
+        if (newnode->getStudent()->getID() >= n->getStudent()->getID()) {//newnode is greater or equal
+            Node* temp = n->getNext();
+            n->setNext(newnode);
+            newnode->setNext(temp);
+        }
+    }
+}
+
+void print(Node* n) {//done
+    cout << fixed << setprecision(2);//for gpa to have 2 decimal places
+    if (n != NULL) {
+        cout << "---------------------" << endl;
+        cout << "Name: " << n->getStudent()->getFirst() << " " << n->getStudent()->getLast() << endl;
+        cout << "ID: " << n->getStudent()->getID() << endl;
+        cout << "GPA: " << n->getStudent()->getGPA() << endl;
+        n = n->getNext();
+        print(n);//recursion
+    }
+}
+
+void deleet(Node* n, int id) {//done
+    Node* h = n;
+    if (id == n->getNext()->getStudent()->getID()) {//if NEXT node is equal
+        Node* temp = n->getNext();
+        n->setNext(n->getNext()->getNext());
+        //n->next = n->next->next;
+        delete temp;
+    }
+    else {
+        n = n->getNext();
+        deleet(n, id);
+    }
+}
+
+void average(Node* n, float total, int count) {//done
+    cout << fixed << setprecision(2);//for gpa to have 2 decimal places
+    if (n->getNext() != NULL) {
+        n = n->getNext();
+        total = total + n->getStudent()->getGPA();
+        count++;
+        average(n, total, count);
+    }
+    else {
+        cout << "Average GPA: " << total/count << endl;
+    }
+}
+
